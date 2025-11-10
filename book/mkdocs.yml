@@ -1,29 +1,29 @@
-site_name: "The Cohesive Tetrad — Open Digital Reading Edition"
+site_name: "The Cohesive Tetrad Book"
 site_url: "https://suratkiade.github.io/the-cohesive-tetrad-book/"
-repo_url: "https://github.com/suratkiade/the-cohesive-tetrad-book"
-repo_name: "the-cohesive-tetrad-book"
 
-# Matikan tombol "Edit on ..."
-edit_uri: ""
+repo_url: "https://github.com/suratkiade/the-cohesive-tetrad-book"
+repo_name: "The Cohesive Tetrad Book"
 
 copyright: >
-  The Cohesive Tetrad by Ade Zaenal Mutaqin. ZERO COPYRIGHT. NO RIGHTS RESERVED.
-  CC0 1.0 Universal Public Domain Dedication.
+  The Cohesive Tetrad by Ade Zaenal Mutaqin.
+  ZERO COPYRIGHT. NO RIGHTS RESERVED. CC0 1.0 Universal Public Domain Dedication.
+  Primary & canonical DOI: 10.17605/OSF.IO/D5S7V.
+  This site is a read-only public digital reading edition built from the canonical repository.
 
-# Semua konten dibaca langsung dari submodule kanonik
-docs_dir: "../source/manuscript"
+# Semua konten halaman publik diambil dari direktori ini.
+# Karena mkdocs.yml berada di dalam folder `book/`, docs_dir cukup ".".
+docs_dir: "."
 
 nav:
   - Manuscript: README.md
 
 theme:
-  name: mkdocs
+  name: "mkdocs"
 
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
   canonical_doi: "10.17605/OSF.IO/D5S7V"
   edition_note: >
-    This website is a thin, read-only public digital reading edition.
-    All canonical content, manuscript text, and derivatives are maintained
-    exclusively in the canonical repository and DOI. Any scholarly reference
-    MUST use the canonical DOI and repository as the single source of truth.
+    This website does not author new text.
+    It renders the canonical manuscript tracked at the canonical repository via Git submodule.
+    Any scholarly reference MUST use the canonical DOI and repository.
