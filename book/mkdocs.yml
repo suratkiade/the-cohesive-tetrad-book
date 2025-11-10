@@ -4,16 +4,7 @@ site_url: "https://suratkiade.github.io/the-cohesive-tetrad-book/"
 repo_url: "https://github.com/suratkiade/the-cohesive-tetrad-book"
 repo_name: "The Cohesive Tetrad Book"
 
-copyright: >
-  The Cohesive Tetrad by Ade Zaenal Mutaqin.
-  ZERO COPYRIGHT. NO RIGHTS RESERVED. CC0 1.0 Universal Public Domain Dedication.
-  Primary & canonical DOI: 10.17605/OSF.IO/D5S7V.
-  This site is a read-only public digital reading edition built from the canonical repository.
-
-# Semua konten halaman publik diambil dari direktori ini.
-# Karena mkdocs.yml berada di dalam folder `book/`, docs_dir cukup ".".
 docs_dir: "."
-
 nav:
   - Manuscript: README.md
 
