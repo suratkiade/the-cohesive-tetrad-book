@@ -10,11 +10,13 @@ All authoritative content, manuscript text, and metadata are maintained exclusiv
 
 
 
-\- Canonical repository: https://github.com/suratkiade/the-cohesive-tetrad
+This folder contains the canonical manuscript and directly aligned derivatives of \*The Cohesive Tetrad: Jalan Menuju Kebenaran\*.
 
-\- Canonical DOI: https://doi.org/10.17605/OSF.IO/D5S7V
 
-\- License: CC0 1.0 Universal (Public Domain Dedication)
+
+\- \[TCT\_v1.0\_canonical.pdf](TCT\_v1.0\_canonical.pdf) – Read the Full PDF Version.
+
+\- \[TCT\_v1.0\_canonical.md](TCT\_v1.0\_canonical.md) – Read the Online Page Version.
 
 
 
