@@ -1,27 +1,48 @@
 site_name: "The Cohesive Tetrad — Open Digital Reading Edition"
 site_url: "https://suratkiade.github.io/the-cohesive-tetrad-book/"
+
+# Repo ini adalah "thin repository" khusus untuk build & publish edisi baca digital.
+# Tetap dicantumkan agar badge/link repo muncul dengan benar di header.
 repo_url: "https://github.com/suratkiade/the-cohesive-tetrad-book"
 repo_name: "the-cohesive-tetrad-book"
+
+# Sangat penting:
+# Matikan default 'Edit on GitHub' (yang sebelumnya memaksa ke master/docs dan bikin 404),
+# karena teks kanonik tidak diedit di repo ini, tapi di repo kanonik.
+edit_uri: ""
 
 copyright: >
   The Cohesive Tetrad by Ade Zaenal Mutaqin.
   ZERO COPYRIGHT. NO RIGHTS RESERVED. CC0 1.0 Universal Public Domain Dedication.
-  Primary & canonical DOI: 10.17605/OSF.IO/D5S7V.
+  Primary & canonical DOI: 10.17605/OSF.IO/DS57V.
   This site is a read-only public digital reading edition built from the canonical repository.
 
-# Semua konten diambil langsung dari submodule canonical:
+# --------------------------------------------------------------------------- #
+# Semua KONTEN diambil langsung dari submodule kanonik (read-only).
+# Struktur:
+#   ./source/        -> submodule repo kanonik
+#   ./source/manuscript/  -> naskah dan turunannya
+# MkDocs akan membaca dokumen dari folder ini.
+# --------------------------------------------------------------------------- #
 docs_dir: "../source/manuscript"
 
+# Navigasi situs.
+# Hasilnya di navbar akan muncul tab "Manuscript",
+# yang membuka file kanonik utama TCT_v1.0_canonical.md.
 nav:
-  - "The Cohesive Tetrad (v1.0, canonical text)": "TCT_v1.0_canonical.md"
+  - Manuscript:
+      - "The Cohesive Tetrad (v1.0, canonical text)": "TCT_v1.0_canonical.md"
 
+# Tema standar MkDocs, cukup stabil & sederhana.
 theme:
   name: "mkdocs"
 
+# Metadata ekstra untuk mempertegas otoritas ilmiah & struktur kanonik.
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
-  canonical_doi: "10.17605/OSF.IO/D5S7V"
+  canonical_doi: "10.17605/OSF.IO/DS57V"
   edition_note: >
-    This website does not author new text.
-    It renders the canonical manuscript tracked at the canonical repository via Git submodule.
-    Any scholarly reference MUST use the canonical DOI and repository.
+    This website does not author or host new original text.
+    It renders the canonical manuscript directly from the canonical repository
+    via a read-only Git submodule.
+    Any scholarly reference MUST cite the canonical DOI and the canonical repository.
