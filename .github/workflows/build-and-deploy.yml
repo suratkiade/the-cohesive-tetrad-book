@@ -3,60 +3,40 @@ name: Build and Deploy - The Cohesive Tetrad (Digital Reading Edition)
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'book/**'
-      - 'source/**'
-      - '.github/workflows/build-and-deploy.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
+  contents: write   # wajib agar bisa push ke gh-pages
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository with submodules (canonical source)
-      # Mengambil repo ini + submodule the-cohesive-tetrad di ./source
+      - name: Checkout repository (with submodules)
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
-      - name: Install MkDocs and theme
+      - name: Install MkDocs
         run: |
-          pip install mkdocs mkdocs-material
+          pip install mkdocs
 
-      - name: Build MkDocs site from book/mkdocs.yml
-        working-directory: book
+      # Build dari konfigurasi di book/mkdocs.yml
+      - name: Build MkDocs site
         run: |
-          mkdocs build --clean --strict --site-dir ../site
+          mkdocs build -f book/mkdocs.yml -d site
 
-      - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy to GitHub Pages (gh-pages)
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: ./site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
+          force_orphan: true
