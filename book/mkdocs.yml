@@ -1,36 +1,29 @@
 site_name: "The Cohesive Tetrad — Open Digital Reading Edition"
 site_url: "https://suratkiade.github.io/the-cohesive-tetrad-book/"
-
 repo_url: "https://github.com/suratkiade/the-cohesive-tetrad-book"
 repo_name: "the-cohesive-tetrad-book"
 
-# Matikan tombol "Edit on GitHub" yang bikin link 404
+# Matikan tombol "Edit on ..."
 edit_uri: ""
 
 copyright: >
-  The Cohesive Tetrad by Ade Zaenal Mutaqin.
-  ZERO COPYRIGHT. NO RIGHTS RESERVED.
+  The Cohesive Tetrad by Ade Zaenal Mutaqin. ZERO COPYRIGHT. NO RIGHTS RESERVED.
   CC0 1.0 Universal Public Domain Dedication.
-  This site is a read-only public digital reading edition
-  built automatically from the canonical repository.
 
-# Semua konten diambil dari submodule kanonik
+# Semua konten dibaca langsung dari submodule kanonik
 docs_dir: "../source/manuscript"
 
 nav:
-  - Manuscript:
-      - "The Cohesive Tetrad (v1.0, canonical text)": "TCT_v1.0_canonical.md"
+  - Manuscript: README.md
 
 theme:
-  name: "mkdocs"
-
-plugins:
-  - search
+  name: mkdocs
 
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
-  canonical_doi: "10.17605/OSF.IO/DS57V"
+  canonical_doi: "10.17605/OSF.IO/D5S7V"
   edition_note: >
-    This website does not author new text.
-    It renders the canonical manuscript tracked at the canonical repository via Git submodule.
-    Any scholarly reference MUST use the canonical DOI and repository.
+    This website is a thin, read-only public digital reading edition.
+    All canonical content, manuscript text, and derivatives are maintained
+    exclusively in the canonical repository and DOI. Any scholarly reference
+    MUST use the canonical DOI and repository as the single source of truth.
