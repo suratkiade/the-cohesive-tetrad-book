@@ -6,37 +6,51 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # wajib agar bisa push ke gh-pages
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository (with submodules)
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-          fetch-depth: 0
+          submodules: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Install MkDocs
+      - name: Install MkDocs and theme
         run: |
-          pip install mkdocs
+          pip install mkdocs mkdocs-material
 
-      # Build dari konfigurasi di book/mkdocs.yml
       - name: Build MkDocs site
-        run: |
-          mkdocs build -f book/mkdocs.yml -d site
+        working-directory: book
+        run: mkdocs build --strict
+        # Output: book/site
 
-      - name: Deploy to GitHub Pages (gh-pages)
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
-          publish_branch: gh-pages
-          force_orphan: true
+          path: book/site
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
