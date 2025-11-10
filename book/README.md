@@ -1,0 +1,1 @@
+This directory contains configuration and templates for the public digital reading edition of The Cohesive Tetrad. No manuscript text or authoritative metadata is authored here; all canonical content is read from the source/ submodule. 
