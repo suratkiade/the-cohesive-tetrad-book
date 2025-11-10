@@ -1,4 +1,4 @@
-\# The Cohesive Tetrad — Open Digital Reading Edition
+\# The Cohesive Tetrad 
 
 
 
