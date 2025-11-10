@@ -3,6 +3,10 @@ name: Build and Deploy - The Cohesive Tetrad (Digital Reading Edition)
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'book/**'
+      - 'source/**'
+      - '.github/workflows/build-and-deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -11,7 +15,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: true
 
 jobs:
@@ -19,7 +23,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository (with submodules)
+      - name: Checkout repository with submodules (canonical source)
+      # Mengambil repo ini + submodule the-cohesive-tetrad di ./source
         uses: actions/checkout@v4
         with:
           submodules: recursive
@@ -28,15 +33,16 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
-      - name: Install MkDocs
+      - name: Install MkDocs and theme
         run: |
-          pip install mkdocs
+          pip install mkdocs mkdocs-material
 
-      - name: Build MkDocs site
+      - name: Build MkDocs site from book/mkdocs.yml
+        working-directory: book
         run: |
-          mkdocs build --config-file book/mkdocs.yml --site-dir site
+          mkdocs build --clean --strict --site-dir ../site
 
       - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v3
@@ -44,12 +50,11 @@ jobs:
           path: ./site
 
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
-    runs-on: ubuntu-latest
-    needs: build
 
     steps:
       - name: Deploy to GitHub Pages
