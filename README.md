@@ -19,6 +19,7 @@ The intellectual work, its conceptual architecture, and its ethical framework ar
 All authoritative content and metadata for *The Cohesive Tetrad* are maintained exclusively in the canonical repository:
 
 - **Canonical repository**: https://github.com/suratkiade/the-cohesive-tetrad
+- **GitHub Pages**: https://github.com/suratkiade/the-cohesive-tetrad
 - **Canonical DOI landing**: https://doi.org/10.17605/OSF.IO/D5S7V
 
 The canonical repository functions as:
