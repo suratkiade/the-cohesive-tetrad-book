@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install MkDocs and theme
+      - name: Install MkDocs and plugins
         run: |
           pip install mkdocs mkdocs-material
 
@@ -47,47 +47,44 @@ jobs:
 
           sitemap_path = Path("book/site/sitemap.xml")
           if not sitemap_path.exists():
-              raise SystemExit("sitemap.xml not found in book/site/")
+            raise SystemExit("sitemap.xml not found at book/site/")
 
-          # Read and parse existing sitemap
           xml_text = sitemap_path.read_text(encoding="utf-8")
           root = ET.fromstring(xml_text)
 
-          # Detect namespace if present
-          ns = ""
-          if root.tag.startswith("{"):
-              ns = root.tag.split("}")[0].strip("{")
+          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 
-          def q(tag):
-              return f"{{{ns}}}{tag}" if ns else tag
-
-          # Collect existing loc values
-          existing_locs = set()
-          for url in root.findall(q("url")):
-              loc = url.find(q("loc"))
+          def existing_locs():
+            locs = set()
+            for url in root.findall("sm:url", ns):
+              loc = url.find("sm:loc", ns)
               if loc is not None and loc.text:
-                  existing_locs.add(loc.text.strip())
+                locs.add(loc.text.strip())
+            return locs
 
           def add_url(loc_value):
-              if loc_value in existing_locs:
-                  return
-              url_el = ET.Element(q("url"))
-              loc_el = ET.SubElement(url_el, q("loc"))
-              loc_el.text = loc_value
-              lastmod_el = ET.SubElement(url_el, q("lastmod"))
-              lastmod_el.text = date.today().isoformat()
-              root.append(url_el)
-              existing_locs.add(loc_value)
+            url_el = ET.Element("{http://www.sitemaps.org/schemas/sitemap/0.9}url")
+            loc_el = ET.SubElement(url_el, "{http://www.sitemaps.org/schemas/sitemap/0.9}loc")
+            loc_el.text = loc_value
+            lastmod_el = ET.SubElement(url_el, "{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod")
+            lastmod_el.text = date.today().isoformat()
+            root.append(url_el)
 
-          # Add the PDF URL you want indexed
-          add_url("https://suratkiade.github.io/the-cohesive-tetrad-book/TCT_v1.0_canonical.pdf")
+          base = "https://suratkiade.github.io/the-cohesive-tetrad-book"
+          targets = [
+            f"{base}/TCT_v1.0_canonical.pdf",
+          ]
 
-          # Write back sitemap
+          locs = existing_locs()
+          for t in targets:
+            if t not in locs:
+              add_url(t)
+
           sitemap_path.write_text(
-              ET.tostring(root, encoding="unicode"),
-              encoding="utf-8"
+            ET.tostring(root, encoding="unicode"),
+            encoding="utf-8"
           )
-          print("Sitemap patched successfully.")
+          print("sitemap patched successfully")
           PY
 
       - name: Upload Pages artifact
