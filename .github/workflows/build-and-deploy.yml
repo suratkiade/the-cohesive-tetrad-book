@@ -29,9 +29,9 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install MkDocs and theme
+      - name: Install MkDocs and plugins
         run: |
-          pip install mkdocs mkdocs-material
+          pip install mkdocs mkdocs-material mkdocs-sitemap-plugin
 
       - name: Build MkDocs site
         working-directory: book
