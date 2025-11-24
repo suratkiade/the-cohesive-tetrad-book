@@ -41,25 +41,38 @@ jobs:
       - name: Patch sitemap to include PDF
         run: |
           python - <<'PY'
+          import xml.etree.ElementTree as ET
           from pathlib import Path
+          from datetime import date
 
-          sitemap = Path("book/site/sitemap.xml")
-          if not sitemap.exists():
-              raise SystemExit("sitemap.xml not found")
+          sitemap_path = Path("book/site/sitemap.xml")
+          if not sitemap_path.exists():
+              raise SystemExit("sitemap.xml not found in book/site/")
 
-          xml = sitemap.read_text(encoding="utf-8")
+          xml_text = sitemap_path.read_text(encoding="utf-8")
+
+          root = ET.fromstring(xml_text)
+          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+
           pdf_url = "https://suratkiade.github.io/the-cohesive-tetrad-book/TCT_v1.0_canonical.pdf"
 
-          if pdf_url in xml:
+          existing = [loc.text for loc in root.findall("sm:url/sm:loc", ns)]
+          if pdf_url in existing:
               print("PDF already listed in sitemap.")
           else:
-              insert = f"""
-  <url>
-    <loc>{pdf_url}</loc>
-  </url>
-"""
-              xml = xml.replace("</urlset>", insert + "\n</urlset>")
-              sitemap.write_text(xml, encoding="utf-8")
+              url_el = ET.Element("{http://www.sitemaps.org/schemas/sitemap/0.9}url")
+              loc_el = ET.SubElement(url_el, "{http://www.sitemaps.org/schemas/sitemap/0.9}loc")
+              loc_el.text = pdf_url
+
+              lastmod_el = ET.SubElement(url_el, "{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod")
+              lastmod_el.text = date.today().isoformat()
+
+              root.append(url_el)
+
+              sitemap_path.write_text(
+                  ET.tostring(root, encoding="unicode"),
+                  encoding="utf-8"
+              )
               print("PDF added to sitemap successfully.")
           PY
 
