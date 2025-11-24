@@ -19,7 +19,9 @@ nav:
   - Manuscript: "TCT_v1.0_canonical.md"
 
 theme:
-  name: "mkdocs"
+  name: "material"
+  custom_dir: overrides
+
 
 plugins:
   - search
