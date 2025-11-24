@@ -38,6 +38,31 @@ jobs:
         run: mkdocs build --strict
         # Output: book/site
 
+      - name: Patch sitemap to include PDF
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          sitemap = Path("book/site/sitemap.xml")
+          if not sitemap.exists():
+              raise SystemExit("sitemap.xml not found")
+
+          xml = sitemap.read_text(encoding="utf-8")
+          pdf_url = "https://suratkiade.github.io/the-cohesive-tetrad-book/TCT_v1.0_canonical.pdf"
+
+          if pdf_url in xml:
+              print("PDF already listed in sitemap.")
+          else:
+              insert = f"""
+  <url>
+    <loc>{pdf_url}</loc>
+  </url>
+"""
+              xml = xml.replace("</urlset>", insert + "\n</urlset>")
+              sitemap.write_text(xml, encoding="utf-8")
+              print("PDF added to sitemap successfully.")
+          PY
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
