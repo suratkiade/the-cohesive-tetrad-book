@@ -23,9 +23,6 @@ theme:
 
 plugins:
   - search
-  - sitemap:
-      changefreq: weekly
-      priority: 0.8
 
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
