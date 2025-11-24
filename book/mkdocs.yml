@@ -9,7 +9,6 @@ edit_uri: ""
 
 copyright: >
   The Cohesive Tetrad by Ade Zaenal Mutaqin. CC0 1.0 Universal Public Domain Dedication. 
-  This site is a read-only public digital reading edition built automatically from the canonical repository.
 
 # Semua konten diambil langsung dari submodule canonical
 docs_dir: "../source/manuscript"
