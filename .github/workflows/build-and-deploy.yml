@@ -17,7 +17,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository (with submodules)
         uses: actions/checkout@v4
@@ -29,16 +28,15 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Install MkDocs and theme
+      - name: Install MkDocs and Material theme
         run: |
           pip install mkdocs mkdocs-material
 
       - name: Build MkDocs site
         working-directory: book
         run: mkdocs build --strict
-        # Output: book/site
 
-      - name: Create or patch sitemap to include PDF
+      - name: Patch sitemap to include PDF
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -46,44 +44,33 @@ jobs:
           from datetime import date
 
           sitemap_path = Path("book/site/sitemap.xml")
-          base = "https://suratkiade.github.io/the-cohesive-tetrad-book/"
-          want_urls = [
-              base,
-              base + "TCT_v1.0_canonical/",
-              base + "TCT_v1.0_canonical.pdf",
-          ]
+          if not sitemap_path.exists():
+              raise SystemExit("sitemap.xml not found at book/site/sitemap.xml")
 
-          ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
-          ET.register_namespace("", ns)
+          tree = ET.parse(sitemap_path)
+          root = tree.getroot()
 
-          if sitemap_path.exists():
-              xml_text = sitemap_path.read_text(encoding="utf-8")
-              root = ET.fromstring(xml_text)
+          ns_uri = "http://www.sitemaps.org/schemas/sitemap/0.9"
+          ns = {"sm": ns_uri}
+
+          pdf_url = "https://suratkiade.github.io/the-cohesive-tetrad-book/TCT_v1_0_canonical.pdf"
+
+          existing = {loc.text for loc in root.findall("sm:url/sm:loc", ns)}
+
+          if pdf_url not in existing:
+              url_el = ET.Element(f"{{{ns_uri}}}url")
+              loc_el = ET.SubElement(url_el, f"{{{ns_uri}}}loc")
+              loc_el.text = pdf_url
+
+              lastmod_el = ET.SubElement(url_el, f"{{{ns_uri}}}lastmod")
+              lastmod_el.text = date.today().isoformat()
+
+              root.append(url_el)
+              tree.write(sitemap_path, encoding="utf-8", xml_declaration=True)
+              print("PDF added to sitemap.")
           else:
-              root = ET.Element(f"{{{ns}}}urlset")
+              print("PDF already in sitemap.")
 
-          existing = set()
-          for url_el in root.findall(f"{{{ns}}}url"):
-              loc_el = url_el.find(f"{{{ns}}}loc")
-              if loc_el is not None and loc_el.text:
-                  existing.add(loc_el.text.strip())
-
-          today = date.today().isoformat()
-
-          for u in want_urls:
-              if u in existing:
-                  continue
-              url_el = ET.SubElement(root, f"{{{ns}}}url")
-              loc_el = ET.SubElement(url_el, f"{{{ns}}}loc")
-              loc_el.text = u
-              lastmod_el = ET.SubElement(url_el, f"{{{ns}}}lastmod")
-              lastmod_el.text = today
-
-          sitemap_path.write_text(
-              ET.tostring(root, encoding="unicode"),
-              encoding="utf-8"
-          )
-          print("sitemap.xml updated.")
           PY
 
       - name: Upload Pages artifact
@@ -97,7 +84,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
