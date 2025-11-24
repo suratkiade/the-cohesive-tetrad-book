@@ -16,15 +16,26 @@ copyright: >
 docs_dir: "../source/manuscript"
 
 nav:
-  - Manuscript: "TCT_v1.0_canonical.md"
+  - Home: "README.md"
+  - Manuscript (Online): "TCT_v1.0_canonical.md"
+  - Manuscript (PDF): "TCT_v1.0_canonical.pdf"
 
 theme:
   name: "material"
   custom_dir: "overrides"
   language: "en"
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
 
 plugins:
   - search
+  - sitemap:
+      changefreq: weekly
+      priority: 0.8
 
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
