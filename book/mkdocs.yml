@@ -23,10 +23,13 @@ theme:
 
 plugins:
   - search
+  - sitemap:
+      changefreq: weekly
+      priority: 0.8
 
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
-  canonical_doi: "10.17605/OSF.IO/DS57V"
+  canonical_doi: "10.17605/OSF.IO/D5S7V"
   edition_note: >
     This website does not author new text. It renders the canonical manuscript
     tracked at the canonical repository via Git submodule. Any scholarly
