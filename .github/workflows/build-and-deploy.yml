@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -38,37 +39,48 @@ jobs:
         run: mkdocs build --strict
         # Output: book/site
 
-      - name: Patch sitemap to include PDF
+      - name: Ensure sitemap includes canonical pages (robust)
         run: |
           python - <<'PY'
-          import xml.etree.ElementTree as ET
           from pathlib import Path
+          import xml.etree.ElementTree as ET
           from datetime import date
 
+          BASE = "https://suratkiade.github.io/the-cohesive-tetrad-book"
+          REQUIRED = [
+              f"{BASE}/",
+              f"{BASE}/TCT_v1.0_canonical.pdf",
+              f"{BASE}/TCT_v1.0_canonical/",
+          ]
+
           sitemap_path = Path("book/site/sitemap.xml")
-          if not sitemap_path.exists():
-              raise SystemExit("sitemap.xml not found. Pastikan site_url ada di mkdocs.yml dan build sukses.")
+          today = date.today().isoformat()
 
-          pdf_url = "https://suratkiade.github.io/the-cohesive-tetrad-book/TCT_v1.0_canonical.pdf"
-          ns_uri = "http://www.sitemaps.org/schemas/sitemap/0.9"
-          ns = {"sm": ns_uri}
-          ET.register_namespace("", ns_uri)
-
-          tree = ET.parse(sitemap_path)
-          root = tree.getroot()
-
-          existing = {loc.text for loc in root.findall("sm:url/sm:loc", ns)}
-          if pdf_url not in existing:
-              url_el = ET.Element(f"{{{ns_uri}}}url")
-              loc_el = ET.SubElement(url_el, f"{{{ns_uri}}}loc")
-              loc_el.text = pdf_url
-              lastmod_el = ET.SubElement(url_el, f"{{{ns_uri}}}lastmod")
-              lastmod_el.text = date.today().isoformat()
-              root.append(url_el)
-              tree.write(sitemap_path, encoding="utf-8", xml_declaration=True)
-              print("PDF added to sitemap.xml")
+          if sitemap_path.exists():
+              tree = ET.parse(sitemap_path)
+              root = tree.getroot()
           else:
-              print("PDF already present in sitemap.xml")
+              root = ET.Element("urlset", {"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+              tree = ET.ElementTree(root)
+
+          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+          existing = set()
+          for url in root.findall("sm:url", ns):
+              loc = url.find("sm:loc", ns)
+              if loc is not None and loc.text:
+                  existing.add(loc.text.strip())
+
+          for u in REQUIRED:
+              if u not in existing:
+                  url_el = ET.SubElement(root, "url")
+                  loc_el = ET.SubElement(url_el, "loc")
+                  loc_el.text = u
+                  lastmod_el = ET.SubElement(url_el, "lastmod")
+                  lastmod_el.text = today
+
+          sitemap_path.parent.mkdir(parents=True, exist_ok=True)
+          tree.write(sitemap_path, encoding="utf-8", xml_declaration=True)
+          print("Sitemap ensured with required URLs.")
           PY
 
       - name: Upload Pages artifact
