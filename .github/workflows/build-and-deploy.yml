@@ -31,6 +31,7 @@ jobs:
 
       - name: Install MkDocs and theme
         run: |
+          python -m pip install --upgrade pip
           pip install mkdocs mkdocs-material
 
       - name: Build MkDocs site
@@ -41,34 +42,42 @@ jobs:
       - name: Patch sitemap to include PDF
         run: |
           python - <<'PY'
-          import xml.etree.ElementTree as ET
           from pathlib import Path
+          import xml.etree.ElementTree as ET
           from datetime import date
 
           sitemap_path = Path("book/site/sitemap.xml")
           if not sitemap_path.exists():
-              raise SystemExit("sitemap.xml not found. Ensure site_url is set in mkdocs.yml.")
+              raise SystemExit("sitemap.xml not found. MkDocs build did not produce it.")
 
-          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-          ET.register_namespace("", ns["sm"])
-
+          # Parse existing sitemap
           tree = ET.parse(sitemap_path)
           root = tree.getroot()
 
+          ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+          ET.register_namespace("", ns)
+
           pdf_url = "https://suratkiade.github.io/the-cohesive-tetrad-book/TCT_v1.0_canonical.pdf"
 
-          # cek apakah pdf sudah ada di sitemap
-          existing = {loc.text for loc in root.findall("sm:url/sm:loc", ns)}
+          # Collect existing <loc> values
+          existing = set()
+          for url in root.findall(f"{{{ns}}}url"):
+              loc = url.find(f"{{{ns}}}loc")
+              if loc is not None and loc.text:
+                  existing.add(loc.text.strip())
+
           if pdf_url not in existing:
-              url_el = ET.Element(f"{{{ns['sm']}}}url")
-              loc_el = ET.SubElement(url_el, f"{{{ns['sm']}}}loc")
+              url_el = ET.Element(f"{{{ns}}}url")
+              loc_el = ET.SubElement(url_el, f"{{{ns}}}loc")
               loc_el.text = pdf_url
-              lastmod_el = ET.SubElement(url_el, f"{{{ns['sm']}}}lastmod")
+              lastmod_el = ET.SubElement(url_el, f"{{{ns}}}lastmod")
               lastmod_el.text = date.today().isoformat()
               root.append(url_el)
 
-          tree.write(sitemap_path, encoding="utf-8", xml_declaration=True)
-          print("sitemap patched successfully.")
+              tree.write(sitemap_path, encoding="utf-8", xml_declaration=True)
+              print("PDF added to sitemap.xml")
+          else:
+              print("PDF already present in sitemap.xml")
           PY
 
       - name: Upload Pages artifact
@@ -85,5 +94,5 @@ jobs:
 
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4
