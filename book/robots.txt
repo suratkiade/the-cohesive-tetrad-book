@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://suratkiade.github.io/the-cohesive-tetrad-book/sitemap.xml
