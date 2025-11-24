@@ -17,59 +17,60 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository (with submodules)
         uses: actions/checkout@v4
         with:
           submodules: true
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Install MkDocs and plugins
+      - name: Install MkDocs and theme
         run: |
-          pip install mkdocs mkdocs-material mkdocs-sitemap
+          pip install mkdocs mkdocs-material
 
       - name: Build MkDocs site
         working-directory: book
         run: mkdocs build --strict
         # Output: book/site
 
-      - name: Patch sitemap to include PDF (robust)
+      - name: Generate sitemap.xml (3 canonical URLs)
         run: |
           python - <<'PY'
           from pathlib import Path
-          import xml.etree.ElementTree as ET
           from datetime import date
+          import xml.etree.ElementTree as ET
 
-          sitemap_path = Path("book/site/sitemap.xml")
-          if not sitemap_path.exists():
-              raise SystemExit("sitemap.xml not found in book/site/")
+          site_dir = Path("book/site")
+          site_dir.mkdir(parents=True, exist_ok=True)
+          sitemap_path = site_dir / "sitemap.xml"
 
-          xml_text = sitemap_path.read_text(encoding="utf-8")
-          root = ET.fromstring(xml_text)
+          base = "https://suratkiade.github.io/the-cohesive-tetrad-book"
+          urls = [
+              f"{base}/",
+              f"{base}/TCT_v1.0_canonical/",
+              f"{base}/TCT_v1.0_canonical.pdf",
+          ]
 
-          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-          pdf_url = "https://suratkiade.github.io/the-cohesive-tetrad-book/TCT_v1.0_canonical.pdf"
+          ns = "http://www.sitemaps.org/schemas/sitemap/0.9"
+          urlset = ET.Element("urlset", xmlns=ns)
 
-          existing = {loc.text for loc in root.findall("sm:url/sm:loc", ns)}
-          if pdf_url not in existing:
-              url_el = ET.Element("{http://www.sitemaps.org/schemas/sitemap/0.9}url")
-              loc_el = ET.SubElement(url_el, "{http://www.sitemaps.org/schemas/sitemap/0.9}loc")
-              loc_el.text = pdf_url
-              lastmod_el = ET.SubElement(url_el, "{http://www.sitemaps.org/schemas/sitemap/0.9}lastmod")
+          for u in urls:
+              url_el = ET.SubElement(urlset, "url")
+              loc_el = ET.SubElement(url_el, "loc")
+              loc_el.text = u
+              lastmod_el = ET.SubElement(url_el, "lastmod")
               lastmod_el.text = date.today().isoformat()
-              root.append(url_el)
 
-              sitemap_path.write_text(
-                  ET.tostring(root, encoding="unicode"),
-                  encoding="utf-8"
-              )
-              print("PDF added to sitemap.")
-          else:
-              print("PDF already present in sitemap.")
+          xml_bytes = ET.tostring(urlset, encoding="utf-8", xml_declaration=True)
+          sitemap_path.write_bytes(xml_bytes)
+
+          print("sitemap.xml written to:", sitemap_path)
           PY
 
       - name: Upload Pages artifact
@@ -80,9 +81,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
