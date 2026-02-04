@@ -22,6 +22,19 @@ nav:
 theme:
   name: "material"
   custom_dir: "overrides"
+  palette:
+    - scheme: slate
+      primary: "blue grey"
+      accent: "cyan"
+  features:
+    - navigation.tabs
+
+markdown_extensions:
+  - pymdownx.snippets:
+      base_path:
+        - "docs"
+        - "../source/manuscript"
+      check_paths: true
 
 markdown_extensions:
   - pymdownx.snippets:
@@ -50,3 +63,5 @@ extra:
   portal_note: >
     This portal publishes a reading edition built from canonical sources. The single
     source of truth remains the DOI releases and canonical repository.
+extra_css:
+  - stylesheets/portal.css
