@@ -1,32 +1,61 @@
-site_name: "The Cohesive Tetrad Book"
+site_name: "The Cohesive Tetrad reading edition portal"
 site_url: "https://suratkiade.github.io/the-cohesive-tetrad-book/"
+site_description: "Professional reading edition portal for The Cohesive Tetrad treatise book with DOI first citation guidance."
 
 repo_url: "https://github.com/suratkiade/the-cohesive-tetrad-book"
-repo_name: "The Cohesive Tetrad Book"
-
-# Matikan tombol "Edit on GitHub" bawaan MkDocs
+repo_name: "the-cohesive-tetrad-book"
 edit_uri: ""
 
 copyright: >
-  The Cohesive Tetrad by Ade Zaenal Mutaqin. CC0 1.0 Universal Public Domain Dedication. 
+  The Cohesive Tetrad by Ade Zaenal Mutaqin. CC0 1.0 Universal Public Domain Dedication.
 
-# Semua konten diambil langsung dari submodule canonical
-docs_dir: "../source/manuscript"
+docs_dir: "docs"
 
 nav:
-  - Manuscript: "TCT_v1.0_canonical.md"
+  - Home: "index.md"
+  - Manuscript: "manuscript.md"
+  - Reading Edition: "reading-edition.md"
+  - Cite: "cite.md"
+  - Provenance: "provenance.md"
+  - Policy: "policy.md"
 
 theme:
   name: "material"
   custom_dir: "overrides"
+  palette:
+    - scheme: slate
+      primary: "blue grey"
+      accent: "cyan"
+  features:
+    - navigation.tabs
+
+markdown_extensions:
+  - pymdownx.snippets:
+      base_path:
+        - "docs"
+        - "../source/manuscript"
+      check_paths: true
 
 plugins:
   - search
+  - linkcheck:
+      absolute_links: false
+      anchor_check: true
+      fail_on_warning: true
+  - sitemap:
+      changefreq: "weekly"
+      priority: 0.5
 
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
   canonical_doi: "10.17605/OSF.IO/D5S7V"
-  edition_note: >
-    This website does not author new text. It renders the canonical manuscript
-    tracked at the canonical repository via Git submodule. Any scholarly
-    reference MUST use the canonical DOI and repository.
+  canonical_doi_url: "https://doi.org/10.17605/OSF.IO/D5S7V"
+  author_name: "Ade Zaenal Mutaqin"
+  author_orcid: "https://orcid.org/0009-0001-4114-3679"
+  license_name: "CC0 1.0 Universal"
+  portal_note: >
+    This portal publishes a reading edition built from canonical sources. The single
+    source of truth remains the DOI releases and canonical repository.
+
+extra_css:
+  - stylesheets/portal.css
