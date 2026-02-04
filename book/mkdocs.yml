@@ -63,5 +63,6 @@ extra:
   portal_note: >
     This portal publishes a reading edition built from canonical sources. The single
     source of truth remains the DOI releases and canonical repository.
+
 extra_css:
   - stylesheets/portal.css
