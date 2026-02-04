@@ -33,8 +33,15 @@ def get_submodule_tag() -> str:
     try:
         return run_git(["describe", "--tags", "--abbrev=0"], SOURCE_DIR)
     except Exception:
-        return "unknown"
+        return ""
 
+
+def get_submodule_short_commit() -> str:
+    try:
+        return run_git(["rev-parse", "--short", "HEAD"], SOURCE_DIR)
+    except Exception:
+        return ""
+        return "unknown"
 
 def get_submodule_commit_date() -> str:
     try:
@@ -75,6 +82,8 @@ def render_template(template_path: Path, output_path: Path, replacements: dict[s
 def main() -> None:
     canonical_commit = get_submodule_commit()
     canonical_tag = get_submodule_tag()
+    if not canonical_tag:
+        canonical_tag = get_submodule_short_commit() or "unknown"
     canonical_commit_date = get_submodule_commit_date()
 
     pdf_path = SOURCE_DIR / "manuscript" / "TCT_v1.0_canonical.pdf"
@@ -90,6 +99,18 @@ def main() -> None:
             exclude_paths={Path("provenance")},
         )
 
+    if canonical_tag == "unknown":
+        canonical_tag_link = "unavailable"
+    elif canonical_tag == get_submodule_short_commit():
+        canonical_tag_link = (
+            "[commit](https://github.com/suratkiade/the-cohesive-tetrad/commit/"
+            f"{canonical_commit})"
+        )
+    else:
+        canonical_tag_link = (
+            "[release](https://github.com/suratkiade/the-cohesive-tetrad/releases/tag/"
+            f"{canonical_tag})"
+        )
     canonical_tag_link = (
         f"[link](https://github.com/suratkiade/the-cohesive-tetrad/releases/tag/{canonical_tag})"
         if canonical_tag != "unknown"

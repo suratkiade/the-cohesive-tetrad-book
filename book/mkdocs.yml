@@ -51,7 +51,6 @@ plugins:
   - sitemap:
       changefreq: "weekly"
       priority: 0.5
-
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"
   canonical_doi: "10.17605/OSF.IO/D5S7V"
