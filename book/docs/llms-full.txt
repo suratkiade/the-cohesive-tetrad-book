@@ -1,0 +1,23 @@
+# The Cohesive Tetrad portal - extended context
+
+## Scope
+This repository is a thin publisher layer for The Cohesive Tetrad. It builds a reading edition from canonical sources stored in the canonical repository and DOI releases.
+
+## Canonical authority
+Canonical authority remains with the DOI releases and the canonical repository. This portal does not define or alter the manuscript.
+
+## Canonical sources
+- Canonical repository: https://github.com/suratkiade/the-cohesive-tetrad
+- Canonical DOI: https://doi.org/10.17605/OSF.IO/D5S7V
+- Author ORCID: https://orcid.org/0009-0001-4114-3679
+
+## How to cite
+Use the DOI as the primary reference and include the canonical repository when relevant.
+
+## Key portal pages
+- https://suratkiade.github.io/the-cohesive-tetrad-book/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/reading-edition/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/manuscript/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/cite/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/provenance/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/policy/

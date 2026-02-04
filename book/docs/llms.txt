@@ -1,0 +1,19 @@
+# The Cohesive Tetrad portal
+
+## Corpus summary
+This site is a professional reading edition portal for The Cohesive Tetrad. It republishes a reading edition built from canonical sources without redefining the manuscript.
+
+## Canonical sources
+- Canonical repository: https://github.com/suratkiade/the-cohesive-tetrad
+- Canonical DOI: https://doi.org/10.17605/OSF.IO/D5S7V
+
+## Citation rules
+Use the DOI as the canonical citation. This portal is not the canonical source.
+
+## Key URLs
+- https://suratkiade.github.io/the-cohesive-tetrad-book/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/reading-edition/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/manuscript/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/cite/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/provenance/
+- https://suratkiade.github.io/the-cohesive-tetrad-book/policy/
