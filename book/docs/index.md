@@ -2,6 +2,7 @@
 title: "The Cohesive Tetrad treatise book DOI portal"
 description: "Professional reading edition portal for The Cohesive Tetrad treatise book. Read online, download the PDF, and cite the DOI."
 ---
+
 <div class="portal-hero">
   <div class="portal-hero__content">
     <p class="portal-eyebrow">DOI-first - Canonical-source anchored - Reading edition</p>

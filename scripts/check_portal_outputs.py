@@ -45,7 +45,9 @@ def main() -> None:
         llms_path = SITE_DIR / "llms.txt"
         if not llms_path.exists():
             failures.append("llms.txt not published at site root.")
-
+        sitemap_path = SITE_DIR / "sitemap.xml"
+        if not sitemap_path.exists():
+            failures.append("sitemap.xml not published at site root.")
     if failures:
         for failure in failures:
             print(failure, file=sys.stderr)
