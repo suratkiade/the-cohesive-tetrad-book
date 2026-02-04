@@ -48,7 +48,6 @@ def main() -> None:
         sitemap_path = SITE_DIR / "sitemap.xml"
         if not sitemap_path.exists():
             failures.append("sitemap.xml not published at site root.")
-
     if failures:
         for failure in failures:
             print(failure, file=sys.stderr)

@@ -36,12 +36,21 @@ markdown_extensions:
         - "../source/manuscript"
       check_paths: true
 
+markdown_extensions:
+  - pymdownx.snippets:
+      base_path:
+        - "docs"
+        - "../source/manuscript"
+      check_paths: true
 plugins:
   - search
   - linkcheck:
       absolute_links: false
       anchor_check: true
       fail_on_warning: true
+  - sitemap:
+      changefreq: "weekly"
+      priority: 0.5
 
 extra:
   canonical_repository: "https://github.com/suratkiade/the-cohesive-tetrad"

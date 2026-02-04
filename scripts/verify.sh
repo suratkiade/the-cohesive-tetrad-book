@@ -12,5 +12,6 @@ python "$ROOT_DIR/scripts/generate_sitemap.py"
 python "$ROOT_DIR/scripts/generate_portal_docs.py"
 mkdocs build --strict --config-file "$ROOT_DIR/book/mkdocs.yml" --site-dir "$ROOT_DIR/book/site"
 python "$ROOT_DIR/scripts/generate_sitemap.py"
-
+python "$ROOT_DIR/scripts/generate_portal_docs.py"
+mkdocs build --strict --config-file "$ROOT_DIR/book/mkdocs.yml" --site-dir "$ROOT_DIR/book/site"
 python "$ROOT_DIR/scripts/check_portal_outputs.py"
