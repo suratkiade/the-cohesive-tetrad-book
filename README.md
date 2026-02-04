@@ -1,74 +1,38 @@
-# The Cohesive Tetrad — Open Digital Reading Edition
+# The Cohesive Tetrad - Professional reading edition portal
 
-This repository provides the **official open digital reading edition infrastructure** for:
+This repository publishes a professional GitHub Pages portal for **The Cohesive Tetrad**. It is a thin publisher layer that builds a reading edition from canonical sources.
 
-**The Cohesive Tetrad: Jalan Menuju Kebenaran**  
-**The Cohesive Tetrad: Aletheia, Logos, Qualia, Mystica**  
-*Akhir dari Perdebatan adalah Awal dari Amal*  
+## Live portal
 
-**Author**: Ade Zaenal Mutaqin (ORCID: 0009-0001-4114-3679)  
-**Primary & canonical DOI**: 10.17605/OSF.IO/D5S7V  
-**License**: CC0 1.0 Universal (Public Domain Dedication)
+- **GitHub Pages**: https://suratkiade.github.io/the-cohesive-tetrad-book/
 
-The intellectual work, its conceptual architecture, and its ethical framework are fully dedicated to the public domain. This repository does **not** redefine the work; it operationalizes access to it.
+## Single source of truth
 
----
+The canonical record remains with the DOI releases and the canonical repository. This repo does not contain the canonical manuscript.
 
-## Canonical Record
-
-All authoritative content and metadata for *The Cohesive Tetrad* are maintained exclusively in the canonical repository:
-
+- **Canonical DOI**: https://doi.org/10.17605/OSF.IO/D5S7V
 - **Canonical repository**: https://github.com/suratkiade/the-cohesive-tetrad
-- **GitHub Pages**: [https://github.com/suratkiade/the-cohesive-tetrad](https://suratkiade.github.io/the-cohesive-tetrad-book/)
-- **Canonical DOI landing**: https://doi.org/10.17605/OSF.IO/D5S7V
 
-The canonical repository functions as:
+## Quick links
 
-- the academic and archival anchor,
-- the single source of truth for the manuscript,
-- the holder of citation metadata (`CITATION.cff`),
-- the declarer of the CC0 1.0 license.
+- [Read Online](https://suratkiade.github.io/the-cohesive-tetrad-book/reading-edition/)
+- [Download PDF](https://doi.org/10.17605/OSF.IO/D5S7V)
+- [Cite](https://suratkiade.github.io/the-cohesive-tetrad-book/cite/)
+- [Provenance](https://suratkiade.github.io/the-cohesive-tetrad-book/provenance/)
+- [Policy](https://suratkiade.github.io/the-cohesive-tetrad-book/policy/)
 
-Any scholarly, institutional, or derivative use of *The Cohesive Tetrad* MUST ultimately reference the canonical DOI and repository above.
+## Thin publisher role
 
----
+This repository is intentionally thin and contains only:
 
-## Role of This Repository
+1. Build configuration and templates under `book/`.
+2. Portal pages under `book/docs/`.
+3. GitHub Actions workflows under `.github/workflows/`.
+4. A read only submodule at `source/` pointing to the canonical repository.
 
-`the-cohesive-tetrad-book` is intentionally a **thin repository** with a single responsibility:
+No independent manuscript content is authored here. The portal only publishes a reading edition built from canonical sources.
 
-> To transform the canonical manuscript into a high-quality public digital book (web edition and downloadable formats) **without** duplicating or diverging from the canonical source.
+## Maintainer
 
-Concretely, this repository:
-
-1. References the canonical repository as a **read-only submodule** under `source/`.
-2. Stores **build configurations and presentation templates** under `book/` to render the manuscript into:
-   - a navigable HTML book (via GitHub Pages),
-   - and, if desired, reproducible PDF/EPUB outputs.
-3. Contains **GitHub Actions workflows** under `.github/workflows/` to:
-   - fetch the latest tagged canonical version,
-   - build the digital edition,
-   - deploy it to GitHub Pages as the official open reading surface.
-4. Does **not** host independent or conflicting versions of:
-   - the manuscript text,
-   - metadata (title, author, DOI, year),
-   - license declarations.
-
-This separation ensures that GitHub Pages acts as a publishing surface, while the canonical repository and DOI remain the scholarly authority.
-
----
-
-## Architecture (Locked Thin Model)
-
-Target directory structure for this repository:
-
-```text
-the-cohesive-tetrad-book/
-├─ source/                 # Git submodule → suratkiade/the-cohesive-tetrad (read-only)
-├─ book/                   # Build configuration and templates (no independent content)
-│  ├─ config.*             # e.g. mdBook / MkDocs / Pandoc configuration
-│  └─ templates/           # Layout and theme files
-├─ .github/
-│  └─ workflows/
-│     └─ build-and-deploy.yml   # CI to build from `source/` and deploy to GitHub Pages
-└─ README.md               # This document
+- **Author**: Ade Zaenal Mutaqin (ORCID: 0009-0001-4114-3679)
+- **License**: CC0 1.0 Universal (Public Domain Dedication)
