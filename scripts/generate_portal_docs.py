@@ -41,7 +41,7 @@ def get_submodule_short_commit() -> str:
         return run_git(["rev-parse", "--short", "HEAD"], SOURCE_DIR)
     except Exception:
         return ""
-
+        return "unknown"
 
 def get_submodule_commit_date() -> str:
     try:
@@ -111,6 +111,11 @@ def main() -> None:
             "[release](https://github.com/suratkiade/the-cohesive-tetrad/releases/tag/"
             f"{canonical_tag})"
         )
+    canonical_tag_link = (
+        f"[link](https://github.com/suratkiade/the-cohesive-tetrad/releases/tag/{canonical_tag})"
+        if canonical_tag != "unknown"
+        else "unavailable"
+    )
 
     replacements = {
         "canonical_tag": canonical_tag,

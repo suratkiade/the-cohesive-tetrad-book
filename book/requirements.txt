@@ -2,3 +2,8 @@ mkdocs==1.6.1
 mkdocs-material==9.5.27
 mkdocs-linkcheck==1.0.6
 pyyaml==6.0.2
+mkdocs-sitemap-plugin==0.6.2
+pyyaml==6.0.2
+mkdocs-sitemap==0.6.0
+mkdocs-sitemap==0.4.0
+pyyaml==6.0.2
