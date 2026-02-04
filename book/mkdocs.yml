@@ -36,6 +36,13 @@ markdown_extensions:
         - "../source/manuscript"
       check_paths: true
 
+markdown_extensions:
+  - pymdownx.snippets:
+      base_path:
+        - "docs"
+        - "../source/manuscript"
+      check_paths: true
+
 plugins:
   - search
   - linkcheck:
