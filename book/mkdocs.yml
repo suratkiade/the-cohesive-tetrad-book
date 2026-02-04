@@ -36,6 +36,13 @@ markdown_extensions:
         - "../source/manuscript"
       check_paths: true
 
+markdown_extensions:
+  - pymdownx.snippets:
+      base_path:
+        - "docs"
+        - "../source/manuscript"
+      check_paths: true
+
 plugins:
   - search
   - linkcheck:
@@ -56,6 +63,5 @@ extra:
   portal_note: >
     This portal publishes a reading edition built from canonical sources. The single
     source of truth remains the DOI releases and canonical repository.
-
 extra_css:
   - stylesheets/portal.css
